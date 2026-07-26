@@ -359,11 +359,7 @@ class PutGetMixedBenchmark(Benchmark):
                 self.__put_benchmark_h(pstats, prefix, pstats.total_ops)
         elif totalsize:  # Size Based
             while pstats.total_op_bytes < totalsize:
-                size, latency, obj = self.__put_benchmark_h(
-                    pstats, prefix, pstats.total_ops
-                )
-                pstats.objs_created.append(obj.name)
-                pstats.update(size, latency, obj.name)
+                self.__put_benchmark_h(pstats, prefix, pstats.total_ops)
 
         pstats.produce_stats()
 
@@ -376,7 +372,7 @@ class PutGetMixedBenchmark(Benchmark):
         obj.get_writer().put_content(content)
         op_end = time.time()
         latency = op_end - op_start
-        stats.objs_created.append(obj.name)
+        # note: update() already appends obj.name to stats.objs_created
         stats.update(size, latency, obj.name)
 
         return obj
