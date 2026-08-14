@@ -29,7 +29,7 @@ def register_job_tools(
             {
                 "id": s.uuid,
                 "error": s.err or "",
-                "finished": s.end_time != 0,
+                "finished": bool(s.end_time),
                 "aborted": s.aborted,
             }
             for s in statuses
@@ -62,7 +62,7 @@ def register_job_tools(
         result = {
             "id": job_id,
             "error": status.err or "",
-            "finished": status.end_time != 0,
+            "finished": bool(status.end_time),
             "aborted": status.aborted,
         }
 
