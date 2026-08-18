@@ -439,8 +439,12 @@ func RangeReader(r cos.ReadCloseSizer, off, length int64) (cos.ReadCloseSizer, e
 			return nil, err
 		}
 	}
+	limitedN := length
+	if length == cos.ContentLengthUnknown {
+		limitedN = 1<<63 - 1 // math.MaxInt64 — read to EOF without importing math
+	}
 	return &cslRange{
-		LimitedReader: io.LimitedReader{R: r, N: length},
+		LimitedReader: io.LimitedReader{R: r, N: limitedN},
 		r:             r,
 		size:          length,
 	}, nil
